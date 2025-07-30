@@ -30,9 +30,21 @@ So without further ado, let's get started, shall we!
 1. [Chapter 0: Setup](chapter00/README.md)
 2. [Chapter 1: Blank Screen](chapter01/README.md)
 
-## Other info
+## Other Info
 
 The source code for this website, and the full source code for all the chapters is hosted on GitHub:
 [github.com/TechnicJelle/GPUForBeginners](https://github.com/TechnicJelle/GPUForBeginners)
 
 Contributions are ***very*** welcome! However small they may be!
+
+## Acknowledgements
+
+Firstly, I would like to thank the SDL developers and contributors for making such an amazing library!
+
+I would also like to thank in particular the
+[SDL GPU Examples repository](https://github.com/TheSpydog/SDL_gpu_examples),
+which I used a lot while learning SDL's GPU API myself,
+and also while writing this guide. Much code of this guide originally comes from there, so check it out!
+
+I would also like to thank Joey de Vries for making [LearnOpenGL.com](https://learnopengl.com/)
+which was a huge inspiration for this guide.
