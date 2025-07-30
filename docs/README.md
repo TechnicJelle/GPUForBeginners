@@ -29,3 +29,10 @@ So without further ado, let's get started, shall we!
 
 1. [Chapter 0: Setup](chapter00/README.md)
 2. [Chapter 1: Blank Screen](chapter01/README.md)
+
+## Other info
+
+The source code for this website, and the full source code for all the chapters is hosted on GitHub:
+[github.com/TechnicJelle/GPUForBeginners](https://github.com/TechnicJelle/GPUForBeginners)
+
+Contributions are ***very*** welcome! However small they may be!
