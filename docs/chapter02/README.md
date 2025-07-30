@@ -7,10 +7,6 @@ So all graphics programming starts with the first triangle.
 In this chapter, we will get a triangle on screen.
 
 
-<div align="center">
-
 [Example Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/example/chapter02/)
 
 [← Previous Chapter](../chapter01/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03/README.md)
-
-</div>
