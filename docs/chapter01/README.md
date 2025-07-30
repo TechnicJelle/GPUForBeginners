@@ -299,6 +299,11 @@ Now, hopefully, you should be able to run the application, and see a nice cornfl
 
 ![A system window filled entirely with cornflower blue](images/01_end-result.png)
 
+
+<div align="center">
+
 [Example Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/example/chapter01/src/main.cpp)
 
 [← Previous Chapter](../chapter00/README.md) | [Index](../README.md) | [Next Chapter →](../chapter02/README.md)
+
+</div>
