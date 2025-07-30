@@ -6,7 +6,6 @@ Triangles are the most basic shape, and all 3D is made up of them.
 So all graphics programming starts with the first triangle.
 In this chapter, we will get a triangle on screen.
 
-
-[Example Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/example/chapter02/)
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/)
 
 [← Previous Chapter](../chapter01/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03/README.md)
