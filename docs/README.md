@@ -5,6 +5,9 @@ This online book will guide you through the whole process!
 
 From your first blank window, to your first triangle, to a 3D model loader, and hopefully beyond!
 
+The code of this guide will be C++, because that is by far the most common language in the Graphics Programming industry today.
+So this guide assumes that you are already familiar with C++.
+
 ## A quick history lesson on GPU Programming
 
 There exist many APIs with which you can control GPUs.
