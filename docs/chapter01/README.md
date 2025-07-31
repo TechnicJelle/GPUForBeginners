@@ -300,6 +300,6 @@ Now, hopefully, you should be able to run the application, and see a nice cornfl
 ![A system window filled entirely with cornflower blue](images/01_end-result.png)
 
 
-[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/src/main.cpp)
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
 
 [← Previous Chapter](../chapter00/README.md) | [Index](../README.md) | [Next Chapter →](../chapter02/README.md)
