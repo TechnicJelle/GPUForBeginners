@@ -65,6 +65,11 @@ jobs:
           libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev
           libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
 
+      - name: Download SDL_shadercross
+        run: |
+          gh run -R libsdl-org/SDL_shadercross download -n ${{ matrix.shadercross }}
+          python -c "import shutil,glob;shutil.unpack_archive(glob.glob('SDL*shadercross*')[0],'.')"
+
       - name: Set reusable strings
         # Turn repeated input strings (such as the build output directory) into step outputs.
         # These step outputs can be used throughout the workflow file.
