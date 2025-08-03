@@ -55,7 +55,9 @@ cmake -S . -B build -G Ninja
 cmake --build build --parallel
 ```
 
-or build a single example:
+_(Ninja seems to be required, as normal Unix Makefiles fail to build.)_
+
+Or build a single chapter:
 
 ```sh
 cmake --build build --target Chapter01
