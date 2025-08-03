@@ -34,6 +34,11 @@ So without further ado, let's get started, shall we!
 2. [Chapter 1: Blank Screen](chapter01/README.md)
 3. [Chapter 2: First Triangle](chapter02/README.md)
 
+## Support
+
+If, at any time, you get stuck following this guide, or if you have a question,
+please don't hesitate to ask in one of the [SDL Communities](https://wiki.libsdl.org/SDL3/FAQCommunities)!
+
 ## Other Info
 
 The source code for this website, and the full source code for all the chapters is hosted on GitHub:
