@@ -141,6 +141,11 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 		return SDL_APP_FAILURE;
 	}
 
+	const SDL_GPUColorTargetDescription colorTargetDescriptions[]{
+		SDL_GPUColorTargetDescription{
+			.format = SDL_GetGPUSwapchainTextureFormat(myAppState->device, myAppState->window)
+		}
+	};
 	const SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo{
 		.vertex_shader = vertexShader,
 		.fragment_shader = fragmentShader,
@@ -149,11 +154,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 			.fill_mode = SDL_GPU_FILLMODE_FILL,
 		},
 		.target_info = SDL_GPUGraphicsPipelineTargetInfo{
-			.color_target_descriptions = (SDL_GPUColorTargetDescription[]){
-				SDL_GPUColorTargetDescription{
-					.format = SDL_GetGPUSwapchainTextureFormat(myAppState->device, myAppState->window)
-				}
-			},
+			.color_target_descriptions = colorTargetDescriptions,
 			.num_color_targets = 1,
 		},
 	};
