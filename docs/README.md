@@ -32,6 +32,7 @@ So without further ado, let's get started, shall we!
 
 1. [Chapter 0: Setup](chapter00/README.md)
 2. [Chapter 1: Blank Screen](chapter01/README.md)
+3. [Chapter 2: First Triangle](chapter02/README.md)
 
 ## Other Info
 
