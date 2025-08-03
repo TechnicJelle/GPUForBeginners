@@ -684,5 +684,5 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 ### Own additions
-build/
+/build*/
 SDL*_shadercross*/

@@ -35,7 +35,6 @@ add_custom_target(copy_assets DEPENDS ${out_assets_files})
 # Macro for Compiling Shaders (will be called in each chapter's CMakeLists.txt)
 macro(compile_shaders)
 	set(SHADERS_OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/shaders)
-	file(MAKE_DIRECTORY ${SHADERS_OUTPUT_DIR})
 
 	file(GLOB_RECURSE src_shader_files
 			RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/
