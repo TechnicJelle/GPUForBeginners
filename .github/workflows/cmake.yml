@@ -104,3 +104,9 @@ jobs:
         #  because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}
+          path: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}
+
