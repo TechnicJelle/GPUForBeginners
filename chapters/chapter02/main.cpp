@@ -69,7 +69,7 @@ SDL_GPUShader* LoadShader(
 	}
 
 	size_t codeSize;
-	void* code = SDL_LoadFile(fullPath.c_str(), &codeSize);
+	void* code = SDL_LoadFile(fullPath.string().c_str(), &codeSize);
 	if (code == nullptr)
 	{
 		SDL_Log("Couldn't load shader file from disk!\n\t%s", SDL_GetError());
