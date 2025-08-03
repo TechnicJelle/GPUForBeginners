@@ -14,12 +14,6 @@ jobs:
       # Ensure that feedback is delivered for all matrix combinations.
       fail-fast: false
 
-      # Set up a matrix to run the following 3 configurations:
-      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
-      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
-      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
-      #
-      # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         build_type: [ Release, Debug ]
@@ -28,18 +22,23 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            shadercross: SDL3_shadercross-VC-x64
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            shadercross: SDL3_shadercross-linux-x64
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
+            shadercross: SDL3_shadercross-linux-x64
           - os: macos-latest
             c_compiler: gcc
             cpp_compiler: g++
+            shadercross: SDL3_shadercross-macos-arm64
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
+            shadercross: SDL3_shadercross-macos-arm64
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -55,15 +54,28 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install Linux dependencies
+        if: startsWith(matrix.os, 'ubuntu')
+        run: >
+          sudo apt-get install build-essential git make
+          pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev
+          libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev
+          libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev
+          libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev
+          libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev
+          libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
+
       - name: Set reusable strings
-        # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+        # Turn repeated input strings (such as the build output directory) into step outputs.
+        # These step outputs can be used throughout the workflow file.
         id: strings
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - name: Configure CMake
-        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required
+        #  if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -73,6 +85,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build
-        # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+        # Build your program with the given configuration. Note that --config is needed
+        #  because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
