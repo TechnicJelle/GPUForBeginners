@@ -61,14 +61,14 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(myAppState->device);
 	if (commandBuffer == nullptr)
 	{
-		SDL_Log("AcquireGPUCommandBuffer failed: %s", SDL_GetError());
+		SDL_Log("Couldn't acquire GPU command buffer: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
 
 	SDL_GPUTexture* swapchainTexture;
 	if (!SDL_WaitAndAcquireGPUSwapchainTexture(commandBuffer, myAppState->window, &swapchainTexture, nullptr, nullptr))
 	{
-		SDL_Log("WaitAndAcquireGPUSwapchainTexture failed: %s", SDL_GetError());
+		SDL_Log("Couldn't acquire swapchain texture: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
 

@@ -297,7 +297,7 @@ delete myAppState;
 
 Now, hopefully, you should be able to run the application, and see a nice cornflower blue window!
 
-![A system window filled entirely with cornflower blue](images/01_end-result.png)
+![a system window filled entirely with cornflower blue](images/01-clearscreen.png)
 
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)

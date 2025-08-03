@@ -685,3 +685,4 @@ fabric.properties
 
 ### Own additions
 build/
+SDL*_shadercross*/
