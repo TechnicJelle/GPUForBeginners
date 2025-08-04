@@ -48,8 +48,8 @@ jobs:
             generator: Ninja
             shadercross: SDL3_shadercross-macos-arm64
         exclude:
-          - os: windows-latest
-            c_compiler: gcc
+          # - os: windows-latest
+          #   c_compiler: gcc
           - os: windows-latest
             c_compiler: clang
           - os: ubuntu-latest
