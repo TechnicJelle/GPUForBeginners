@@ -14,7 +14,7 @@ There exist many APIs with which you can control GPUs.
 Many of them are old and antiquated,
 and many of them only work on certain platforms, OSes, devices, and consoles.
 
-Luckily, there is a very nice library that wraps all these various platform APIs: SDL3.
+Luckily, there is a very nice library that wraps all these various platform APIs: [SDL3](https://www.libsdl.org/).
 
 It works on essentially every device and platform, notably all modern computers and game consoles.  
 Some mobile devices are also supported, and web support is planned as well.
