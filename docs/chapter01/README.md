@@ -270,6 +270,7 @@ Later on, we will also put stuff in between the start and the end of the render 
 
 And then finally, outside the swapchain's if-statement again, we can say we are done with filling in the command buffer.
 While saying that, we also finally send it off to the GPU for processing.
+
 ```c++
 SDL_SubmitGPUCommandBuffer(commandBuffer);
 ```
@@ -285,11 +286,13 @@ MyAppState* myAppState = static_cast<MyAppState*>(appstate);
 ```
 
 With that, we can now deattach the GPU Device from the Window again:
+
 ```c++
 SDL_ReleaseWindowFromGPUDevice(myAppState->device, myAppState->window);
 ```
 
 And then clean them up:
+
 ```c++
 SDL_DestroyWindow(myAppState->window);
 SDL_DestroyGPUDevice(myAppState->device);
