@@ -277,6 +277,7 @@ SDL_SubmitGPUCommandBuffer(commandBuffer);
 Right now, you could already run the code, but we haven't done out cleanup yet, so hold on for a few more moments!
 
 ## Cleanup
+
 In your `SDL_AppQuit` function, get the pointer to your MyAppState instance back from SDL:
 
 ```c++
