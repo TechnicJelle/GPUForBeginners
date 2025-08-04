@@ -19,8 +19,8 @@ jobs:
 
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        build_type: [ Release ]
         c_compiler: [ gcc, clang, cl ]
+        build_type: [ Release ]
         include:
             #set other variables on all the matrix possibilities
           - os: windows-latest
@@ -113,6 +113,6 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}
+          name: ${{ matrix.os }}_${{ matrix.c_compiler }}_${{ matrix.build_type }}
           path: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}
 
