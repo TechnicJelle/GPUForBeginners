@@ -54,7 +54,7 @@ Most of these stages have options that need to be set for the data to go through
 A few of the stages can even be fully programmed with GPU programs called "shaders".  
 SDL's GPU API exposes two of these shaders:
 
-- Vertex Shader: This GPU program positions transforms the vertex positions to be in the correct place in the world.
+- Vertex Shader: This GPU program transforms the vertex positions to be in the correct place in the world.
     - This runs for each vertex you pass to the GPU.
 - Fragment Shader: This GPU program decides which pixels become which color.
     - This runs for each fragment (essentially the same as a pixel) on the screen.
@@ -66,12 +66,12 @@ Some (older) GPU APIs included a compiler for shader code in their drivers,
 but modern GPU APIs delegate shader compilation to the application developers instead.
 
 Shaders can be programmed in many languages, and the format that they have to be compiled to differs per platform.  
-_For more background information on why shader compilation is like this,
-read this article from the developers of the SDL GPU API: https://moonside.games/posts/layers-all-the-way-down/_
+_For more background information on why shader compilation is like this, read
+[this article](https://moonside.games/posts/layers-all-the-way-down/) from the developers of the SDL GPU API._
 
 For this guide, we will be writing shaders in the shader language HLSL,
 because it is the most common shader language in the industry.  
-Another language that exists is GLSL, which more common with older GPU APIs and some hobbyist spaces.
+Another language that exists is GLSL, which is more common with older GPU APIs and in hobbyist spaces.
 
 HLSL is pretty similar to C and C++, so you should be able to pick it up pretty quickly.
 
@@ -93,8 +93,8 @@ For most projects, this is not necessary.
 Though, it could be useful for hot-reloading during development.
 
 At the time of writing, SDL_shadercross does not have an official release yet,
-but you can download the latest build from its [**Actions
-** Tab](https://github.com/libsdl-org/SDL_shadercross/actions).  
+but you can download the latest build from its
+[**Actions** Tab](https://github.com/libsdl-org/SDL_shadercross/actions).  
 Make sure to get the latest successful build and to download the artifact for your specific platform.
 
 You can find the CLI tool executable in the `bin/` folder.  
@@ -496,6 +496,7 @@ SDL_ReleaseGPUShader(myAppState->device, fragmentShader);
 ```
 
 Call the function at the end of `SDL_AppInit()`:
+
 ```c++
 if (!CreatePipeline(myAppState))
 {
