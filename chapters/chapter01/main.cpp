@@ -106,9 +106,12 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
 		SDL_Log("Application quit with an unexpected result");
 		break;
 	}
+
 	MyAppState* myAppState = static_cast<MyAppState*>(appstate);
+
 	SDL_ReleaseWindowFromGPUDevice(myAppState->device, myAppState->window);
 	SDL_DestroyWindow(myAppState->window);
 	SDL_DestroyGPUDevice(myAppState->device);
+
 	delete myAppState;
 }
