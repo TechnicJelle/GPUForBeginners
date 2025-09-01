@@ -165,7 +165,7 @@ we can request a command buffer from SDL that we will fill with some render comm
 SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(myAppState->device);
 if (commandBuffer == nullptr)
 {
-	SDL_Log("AcquireGPUCommandBuffer failed: %s", SDL_GetError());
+	SDL_Log("Couldn't acquire GPU command buffer: %s", SDL_GetError());
 	return SDL_APP_FAILURE;
 }
 ```
@@ -187,7 +187,7 @@ The two `nullptr`s are for the dimensions of the depth buffer. This is something
 SDL_GPUTexture* swapchainTexture;
 if (!SDL_WaitAndAcquireGPUSwapchainTexture(commandBuffer, myAppState->window, &swapchainTexture, nullptr, nullptr))
 {
-	SDL_Log("WaitAndAcquireGPUSwapchainTexture failed: %s", SDL_GetError());
+	SDL_Log("Couldn't acquire swapchain texture: %s", SDL_GetError());
 	return SDL_APP_FAILURE;
 }
 ```
@@ -301,8 +301,7 @@ delete myAppState;
 
 Now, hopefully, you should be able to run the application, and see a nice cornflower blue window!
 
-![a system window filled entirely with cornflower blue](images/01-clearscreen.png)
-
+![A system window filled entirely with cornflower blue.](images/01-clearscreen.png)
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
 

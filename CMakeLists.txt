@@ -40,7 +40,7 @@ macro(compile_shaders)
 			RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/
 			"${CMAKE_CURRENT_SOURCE_DIR}/*.hlsl")
 
-	# Find folders that could contain shadercross
+	# Find directories that could contain shadercross
 	file(GLOB SC_DIRS "${CMAKE_SOURCE_DIR}/SDL*_shadercross*")
 	find_program(SC_EXECUTABLE shadercross REQUIRED
 			HINTS ${SC_DIRS}

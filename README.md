@@ -28,16 +28,19 @@ git clone --recursive git@github.com:TechnicJelle/GPUForBeginners.git
 
 Now that the code has been downloaded, you also need the "SDL_shadercross" shader compiler.
 
-#### Option A: Downloading
-
 You can download it from the Actions tab here:
 [github.com/libsdl-org/SDL_shadercross](https://github.com/libsdl-org/SDL_shadercross)  
 Make sure to get the latest successful build and to download the artifact for your specific platform.  
-Unzip it into the root of this repository. CMake should then automatically detect and use it.
 
-#### Option B: System
+#### Option A: System
 
-You can also install it systemwide (put it on your PATH), for CMake to detect it.
+You can unpack the archive you downloaded somewhere and add its `bin/` directory to your PATH.
+CMake should then automatically detect and use it.
+
+#### Option B: Project
+
+Alternatively, you can unpack the archive into the root of this repository.
+CMake should then automatically detect and use it.
 
 ### 3. Build
 
