@@ -34,6 +34,9 @@ So without further ado, let's get started, shall we!
 1. [Chapter 0: Setup](chapter00/README.md)
 2. [Chapter 1: Blank Screen](chapter01/README.md)
 3. [Chapter 2: First Triangle](chapter02/README.md)
+4. [Chapter 3: Rainbow Triangle](chapter03/README.md)
+5. [Chapter 4: Quad](chapter04/README.md)
+6. [Chapter 5: Textured Quad](chapter05/README.md)
 
 ## Support
 
