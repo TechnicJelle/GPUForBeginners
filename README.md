@@ -6,7 +6,7 @@ This repository contains both the guide/book in the [`docs`](docs) directory,
 as well as the final code for each chapter that you can look at when you're stuck,
 and also clone and run yourself.
 
-## [Click here to start reading the guide](docs/README.md)
+## [Click here to start reading the guide](https://gpuforbeginners.com/)
 
 ## Running the chapters
 
