@@ -68,5 +68,6 @@ macro(compile_shaders)
 endmacro()
 
 # Projects
-add_subdirectory(chapters/chapter01)
-add_subdirectory(chapters/chapter02)
+add_subdirectory(chapters/chapter01new)
+add_subdirectory(chapters/chapter02new)
+add_subdirectory(chapters/chapter03)

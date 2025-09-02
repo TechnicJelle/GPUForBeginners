@@ -1,4 +1,4 @@
-# Chapter 2: First Triangle
+# Chapter 3: First Triangle
 
 To get a 3D model onto our screen, we first need to know what 3D models are made up of.
 
@@ -245,7 +245,7 @@ shadercross "SolidColor.frag.hlsl" -o "SolidColor.frag.dxil"
 shadercross "SolidColor.frag.hlsl" -o "SolidColor.frag.msl"
 ```
 
-Place the compiled shader files somewhere your program will be able to access them.
+Place the compiled shader files somewhere your application will be able to access them.
 I will store them in a directory called "shaders" next to my executable.
 
 An exercise to the reader: integrate this CLI tool in your build system,
@@ -257,7 +257,7 @@ You can look at how I do it
 #### Load
 
 Now that we have compiled the shaders into the various formats the platform(s) might need,
-we need to make our program actually load them in!
+we need to make our application actually load them in!
 
 Create a new function above `SDL_AppInit()`:
 `SDL_GPUShader* LoadShader(SDL_GPUDevice* device, const std::string& shaderFilename)`.
@@ -777,9 +777,9 @@ you can add these new options below the `.fill_mode` option:
 We use counter-clockwise instead of clockwise, because that is more common.
 But if you prefer, for some reason, you could set it the other way.
 
-If you run the program again, nothing should look any different.  
+If you run the application again, nothing should look any different.  
 But if you suddenly don't see the triangle anymore, double-check the order of your vertices again!
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/)
 
-[← Previous Chapter](../chapter01/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03/README.md)
+[← Previous Chapter](../chapter02new/README.md) | [Index](../README.md) | [Next Chapter →](../chapter04/README.md)

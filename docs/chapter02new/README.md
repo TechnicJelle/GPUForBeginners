@@ -1,105 +1,14 @@
-# Chapter 1: Blank Screen
+# Chapter 2: Blank Screen
 
-In this chapter, we will create a simple application with a game loop and a colored window.
-
-## Game Loop
-
-SDL3 provides a simple, highly cross-platform way to create a game loop,
-through its "[Main Callbacks](https://wiki.libsdl.org/SDL3/README-main-functions)" system.
-In this guide, we will use that to keep our code simple and portable.
-
-So remove any existing code in your `main.cpp` file, and replace it with the following:
-
-```c++
-#include <SDL3/SDL.h>
-#define SDL_MAIN_USE_CALLBACKS
-#include <SDL3/SDL_main.h>
-
-// This function runs once at startup
-SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
-{
-	SDL_Log("Init");
-	// Continue running the program
-	return SDL_APP_CONTINUE;
-}
-
-// This function runs when a new event (mouse input, keypresses, etc) occurs
-SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
-{
-	SDL_Log("Event");
-	switch (event->type)
-	{
-	case SDL_EVENT_QUIT:
-		// Quit the program with a success state
-		return SDL_APP_SUCCESS;
-	default:
-		// Continue running the program
-		return SDL_APP_CONTINUE;
-	}
-}
-
-// This function runs once per frame, and is the heart of the program
-SDL_AppResult SDL_AppIterate(void* appstate)
-{
-	SDL_Log("Iterate");
-	// Continue running the program
-	return SDL_APP_CONTINUE;
-}
-
-// This function runs once at shutdown
-void SDL_AppQuit(void* appstate, SDL_AppResult result)
-{
-	SDL_Log("Quit");
-}
-```
-
-This will log a message "Init" once, at the start of the application,
-"Event" every time an event like mouse or keyboard input comes in (many times per frame),
-"Iterate" once every single frame, and "Quit" once at the end.
-
-In the next section, we will start replacing these logs with actual code.
-
-## Window
-
-Before we start by creating the window in which we will draw all our stuff,
-we first need a place to store the pointer to that window.
-
-Above the callback functions, create a struct:
-
-```c++
-struct MyAppState
-{
-	SDL_Window* window = nullptr;
-};
-```
-
-Now, in the `SDL_AppInit` function, create an instance of it on the heap and pass it to SDL for safekeeping:
-
-```c++
-MyAppState* myAppState = new MyAppState();
-*appstate = myAppState;
-```
-
-We can then create the window and store it in our struct instance:
-
-```c++
-myAppState->window = SDL_CreateWindow("Hello, SDL GPU!", 1280, 720, 0);
-if (myAppState->window == nullptr)
-{
-	SDL_Log("Couldn't create window: %s", SDL_GetError());
-	return SDL_APP_FAILURE;
-}
-```
-
-Don't forget to check for errors!
-
-If you run the program now, you will see a blank/black screen that you can close with the X button.
+In this chapter, we will give the window we created in the last chapter a color, instead of black.
 
 ## GPU Device
 
-Now that we have a window, we can create a "graphics context" in it, with which we will draw things to it.
+Before we can start drawing stuff into the window we created last chapter,
+we need to make a connection to the GPU Device that is inside the computer.
 
-Add a field to store that in the `MyAppState` struct to store a pointer to the GPU Device:
+We will need this GPU Device pretty often, throughout our code,
+so add a field to store that in the `MyAppState` struct to store a pointer to the GPU Device:
 
 ```c++
 struct MyAppState
@@ -314,4 +223,4 @@ Now, hopefully, you should be able to run the application, and see a nice cornfl
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
 
-[← Previous Chapter](../chapter00/README.md) | [Index](../README.md) | [Next Chapter →](../chapter02/README.md)
+[← Previous Chapter](../chapter01new/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03new/README.md)

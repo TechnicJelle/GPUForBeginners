@@ -1,4 +1,4 @@
-# Chapter 3: Rainbow Triangle
+# Chapter 4: Rainbow Triangle
 
 In this chapter, we will give the triangle some color,
 with a technique called "Vertex Colors".
@@ -45,4 +45,4 @@ Output main(Input input)
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter03/)
 
-[← Previous Chapter](../chapter02/README.md) | [Index](../README.md) | [Next Chapter →](../chapter04/README.md)
+[← Previous Chapter](../chapter03new/README.md) | [Index](../README.md) | [Next Chapter →](/README.md)
