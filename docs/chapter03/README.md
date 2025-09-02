@@ -785,6 +785,6 @@ But if you prefer, for some reason, you could set it the other way.
 If you run the application again, nothing should look any different.  
 But if you suddenly don't see the triangle anymore, double-check the order of your vertices again!
 
-[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/)
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter03/)
 
 [← Previous Chapter](../chapter02/README.md) | [Index](../README.md) | [Next Chapter →](../chapter04/README.md)

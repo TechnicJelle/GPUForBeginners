@@ -43,6 +43,6 @@ Output main(Input input)
 
 ![The triangle from the previous chapter now has multiple colors.](images/01-triangle_multiple_colors.png)
 
-[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter03/)
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter04/)
 
 [← Previous Chapter](../chapter03/README.md) | [Index](../README.md) | [Next Chapter →](/README.md)

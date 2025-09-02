@@ -221,6 +221,6 @@ Now, hopefully, you should be able to run the application, and see a nice cornfl
 
 ![A system window filled entirely with cornflower blue.](images/01-clearscreen.png)
 
-[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/main.cpp)
 
 [← Previous Chapter](../chapter01/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03/README.md)

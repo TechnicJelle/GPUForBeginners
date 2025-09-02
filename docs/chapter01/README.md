@@ -107,4 +107,6 @@ You should probably remove the `SDL_Log`s, now.
 
 In the next chapter, we will color in the window with the GPU!
 
+[Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
+
 [Index](../README.md) | [Next Chapter →](../chapter02/README.md)
