@@ -398,7 +398,7 @@ but most of our arrays will just contain a single item.
 
 The first array is for "Vertex Buffer Descriptions".
 Buffers are essentially blocks of memory on the GPU that store a specific thing.
-And as we will be sending our vertices in a "vertex buffer", we need to tell the GPU how that memory is laid out.
+And as we will be sending our vertices in a "Vertex Buffer", we need to tell the GPU how that memory is laid out.
 
 We need to tell the GPU how big each vertex is, and what the purpose of this buffer is:
 
@@ -458,7 +458,22 @@ std::array colorTargetDescriptions{
 One last small thing to do before we can create the pipeline, is to prepare some place to store it!
 Add a new field in your `MyAppState` struct for the pipeline: `SDL_GPUGraphicsPipeline* pipeline = nullptr;`
 
-Finally, we can create the pipeline:
+Finally, we can create the pipeline.  
+We first pass in our shaders, and our Vertex Input State,
+which consists of the `vertexBufferDescriptions` and the `vertexAttributes`.
+
+Then, the `.primitive_type` option says what our vertex data actually is.  
+Is it a bunch of separate triangles, or are they perhaps connected?
+Or are they actually lines or points instead?  
+We just have a single triangle for now, so we set it to `SDL_GPU_PRIMITIVETYPE_TRIANGLELIST`.
+
+The `.rasterizer_state` declares how the geometry in the world gets turned into pixels.
+For now, we just declare the `.fill_mode`, which controls where the fragment shader is run:
+Is it run on the whole triangle (`SDL_GPU_FILLMODE_FILL`), or only the edges (`SDL_GPU_FILLMODE_LINE`)?  
+For now, we set it to fill, because we want to see the whole triangle.
+But, once you have it all running well, you could try switching it to LINE instead to see how that would look.
+
+Lastly, we have the `.target_info`, which contains our `colorTargetDescriptions`.
 
 ```c++
 SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo{
@@ -473,7 +488,6 @@ SDL_GPUGraphicsPipelineCreateInfo pipelineCreateInfo = SDL_GPUGraphicsPipelineCr
 	.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
 	.rasterizer_state = SDL_GPURasterizerState{
 		.fill_mode = SDL_GPU_FILLMODE_FILL,
-		.cull_mode = SDL_GPU_CULLMODE_BACK,
 	},
 	.target_info = SDL_GPUGraphicsPipelineTargetInfo{
 		.color_target_descriptions = colorTargetDescriptions.data(),
@@ -488,7 +502,8 @@ if (myAppState->pipeline == nullptr)
 }
 ```
 
-Before returning true (for success) from this function, make sure to release the shaders that you loaded at the start:
+Before returning true (for success) from this function,
+make sure to release the shaders that you loaded at the start:
 
 ```c++
 SDL_ReleaseGPUShader(myAppState->device, vertexShader);
@@ -507,9 +522,263 @@ if (!CreatePipeline(myAppState))
 
 ## Vertex Buffers
 
+Now that we have told the GPU what we're going to send to it, and in what format,
+we need to actually send the data.  
+For now, the data we will send is just the three vertices of the triangle.
+
+Create a new function above `SDL_AppInit()`:
+`bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)`.  
+This function returns true on success, false on failure.
+
+In here, we first need to store how many vertices we're working with.  
+This data is needed later when we're actually rendering the vertices,
+so make a new field in you MyAppState struct: `Uint32 numVertices = 0;`.  
+We will also need the total size in bytes of the data,
+but this one can just be a local variable.
+
+```c++
+myAppState->numVertices = vertices.size();
+Uint32 verticesSize = myAppState->numVertices * sizeof(Vertex);
+```
+
+We will now request the GPU to create a bit of memory for us
+in which we can store our data: a "Vertex Buffer".
+
+```c++
+SDL_GPUBufferCreateInfo vertexBufferCreateInfo = SDL_GPUBufferCreateInfo{
+	.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
+	.size = verticesSize,
+};
+myAppState->vertexBuffer = SDL_CreateGPUBuffer(myAppState->device, &vertexBufferCreateInfo);
+if (myAppState->vertexBuffer == nullptr)
+{
+	SDL_Log("Couldn't create vertex buffer: %s", SDL_GetError());
+	return false;
+}
+```
+
+### Transfer Buffers
+
+To actually put our data into the GPU's memory, we need to transfer it through a "Transfer Buffer".
+This is a special buffer that we put our data into on the CPU-side, and then it copies the data to the GPU for us.
+
+```c++
+SDL_GPUTransferBufferCreateInfo transferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo{
+	.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+	.size = verticesSize,
+};
+SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(myAppState->device, &transferBufferCreateInfo);
+if (transferBuffer == nullptr)
+{
+	SDL_Log("Couldn't create transfer buffer: %s", SDL_GetError());
+	return false;
+}
+```
+
+The Transfer Buffer gives us a pointer to the start of some memory with the length we requested:
+
+```c++
+Vertex* transferData = static_cast<Vertex*>(SDL_MapGPUTransferBuffer(myAppState->device, transferBuffer, false));
+if (transferData == nullptr)
+{
+	SDL_Log("Couldn't map transfer buffer: %s", SDL_GetError());
+	SDL_ReleaseGPUTransferBuffer(myAppState->device, transferBuffer);
+	return false;
+}
+```
+
+We can then copy our vertices into the Transfer Buffer:
+
+```c++
+SDL_memcpy(transferData, vertices.data(), verticesSize);
+```
+
+Once we are done copying data, we can unmap the Transfer Buffer's pointer again:
+
+```c++
+SDL_UnmapGPUTransferBuffer(myAppState->device, transferBuffer);
+```
+
+### Copying
+
+Now that we have copied our data to the Transfer Buffer,
+we need to make the Transfer Buffer upload the data to the Vertex Buffer.
+
+We do this by running a Command Buffer, so acquire one again:
+
+```c++
+SDL_GPUCommandBuffer* uploadCmdBuf = SDL_AcquireGPUCommandBuffer(myAppState->device);
+if (uploadCmdBuf == nullptr)
+{
+	SDL_Log("Couldn't acquire GPU command buffer: %s", SDL_GetError());
+	return SDL_APP_FAILURE;
+}
+```
+
+And now, instead of a Render Pass, like we used in the previous chapter,
+we will use a different kind of pass: a "Copy Pass":
+
+```c++
+SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuf);
+```
+
+We now need to put actual instructions into this Copy Pass,
+for which we need to provide some information in the form of structs again.
+
+Firstly, we need to say the source from _where_ to upload.
+The `.offset` here is used to tell where the data in your transfer buffer starts.
+Usually this is just at the start, so we set it to `0`.
+
+```c++
+SDL_GPUTransferBufferLocation bufferLocation = SDL_GPUTransferBufferLocation{
+	.transfer_buffer = transferBuffer,
+	.offset = 0,
+};
+```
+
+Secondly, we need to say where we want to upload _to_.
+Of course this is our Vertex Buffer:
+
+```c++
+SDL_GPUBufferRegion bufferRegion = SDL_GPUBufferRegion{
+	.buffer = myAppState->vertexBuffer,
+	.offset = 0,
+	.size = verticesSize,
+};
+```
+
+With these two pieces of information, we can define the upload instruction.  
+The last parameter, the boolean, is useful when you have data that changes each frame.
+We will cover this in more detail later.  
+For now, this data doesn't ever change, so we set it to `false`.
+
+```c++
+SDL_UploadToGPUBuffer(copyPass, &bufferLocation, &bufferRegion, false);
+```
+
+We now end the copy pass and execute it:
+
+```c++
+SDL_EndGPUCopyPass(copyPass);
+if (!SDL_SubmitGPUCommandBuffer(uploadCmdBuf))
+{
+	SDL_Log("Couldn't submit GPU command buffer: %s", SDL_GetError());
+	return false;
+}
+
+```
+
+Once this has completed, we have to release the Transfer Buffer, as we are done with it:
+
+```c++
+SDL_ReleaseGPUTransferBuffer(myAppState->device, transferBuffer);
+```
+
+And return `true` from the function, to signify success.
+
+### Calling
+
+Now before we can call our new function, we first need to actually create some vertices in our code, on the CPU-side.
+We create an array, and put in the three vertices.
+
+Put it at the end of `SDL_AppInit()`, after `CreatePipeline()`.
+
+We need to make sure the order of them is _counter-clockwise_, but which one is first does not matter.  
+The order of the vertices decides which way the triangle is facing.
+At the end of the chapter, we will do an optimization with this.
+
+```c++
+std::array vertices{
+	Vertex{-1.0f, -1.0f, 0.0f}, // Bottom-Left
+	Vertex{1.0f, -1.0f, 0.0f}, // Bottom-Right
+	Vertex{0.0f, 1.0f, 0.0f}, // Top-Middle
+};
+```
+
+After you've made the array, you can pass it into our new function:
+
+```c++
+if (!CreateVertexBuffer(myAppState, vertices))
+{
+	// Error message already logged in the function
+	return SDL_APP_FAILURE;
+}
+```
+
+## Rendering
+
+After all this, we still haven't actually _rendered_ the triangle.
+We have only defined our data, _how_ we will render it, and the data to work with.
+
+The actual rendering of the triangle happens in our render loop, in `SDL_AppIterate()`.
+
+Find where you begin and end your render pass and put some space in between these lines of code.
+We will render our triangle here.
+
+First, we need to declare which pipeline we will be using.
+We stored that in our `MyAppState`, so we can use it as follows:
+
+```c++
+SDL_BindGPUGraphicsPipeline(renderPass, myAppState->pipeline);
+```
+
+Second, we need to declare which data we will be piping through.
+That is our Vertex Buffer, which we have also stored in our `MyAppState`.  
+We can put multiple Vertex Buffers into here, for bulk rendering, but we will just be using one.
+
+The `.offset` here is used again for overlapping data.
+
+When we created the `SDL_GPUVertexBufferDescription`, we filled in a `.slot` value.
+We repeat that one here, to reference the same slot. Here, it is just 0.
+
+```c++
+std::array vertexBuffers{
+	SDL_GPUBufferBinding{
+		.buffer = myAppState->vertexBuffer,
+		.offset = 0,
+	},
+};
+SDL_BindGPUVertexBuffers(renderPass, 0, vertexBuffers.data(), vertexBuffers.size());
+```
+
+Now that we have bound the instructions and the data on which those instructions run,
+we can finally render it!
+
+We provide the Render Pass, as usual, and the number of vertices we have (3).  
+We also say how many instances we have, which is 1 for now, but we may explore Instanced Rendering in a later chapter.
+(Instanced Rendering is a method to relatively cheaply draw the same thing many times.)  
+After that, we say on which vertex and which instance we want to start.
+We want to start at the beginning, so we fill in 0 for those as well.
+
+```c++
+SDL_DrawGPUPrimitives(renderPass, myAppState->numVertices, 1, 0, 0);
+```
+
+After this, you're done, and the render pass can be ended as before.
+
 ## run and finally see a triangle
 
 ![A red triangle on top of the background from the previous chapter.](images/03-triangle_single_color.png)
+
+## Bonus Optimization
+
+Because we know that the triangle is always facing the correct direction, (towards the "camera"),
+we can tell the GPU to not bother drawing the other side.
+This can save performance sometimes.
+
+In your `SDL_GPUGraphicsPipelineCreateInfo`, in the `.rasterizer_state` option,
+you can add these new options below the `.fill_mode` option:
+
+```c++
+.cull_mode = SDL_GPU_CULLMODE_BACK,
+.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE,
+```
+
+We use counter-clockwise instead of clockwise, because that is more common.
+But if you prefer, for some reason, you could set it the other way.
+
+If you run the program again, nothing should look any different.  
+But if you suddenly don't see the triangle anymore, double-check the order of your vertices again!
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/)
 

@@ -216,10 +216,11 @@ This struct contains the information about which texture the next Render Pass wi
 which colors it will use, and what it will do to and with the colors.
 
 For now, it's pretty simple.
-The `texture` is the swapchain texture we got earlier, and the `clear_color` is whatever color you like,
-passed through as an [`SDL_FColor`](https://wiki.libsdl.org/SDL3/SDL_FColor).
+The `.texture` is the swapchain texture we got earlier,
+and the `.clear_color` is whatever color you like, passed through as an
+[`SDL_FColor`](https://wiki.libsdl.org/SDL3/SDL_FColor).
 
-The `load_op` is what we do with the data that's currently already in the texture.
+The `.load_op` is what we do with the data that's currently already in the texture.
 Here, we just want to clear it all to the color we provided above,
 so we set it to `SDL_GPU_LOADOP_CLEAR`.
 With this, you get a nice clean slate to render new stuff on top of.
@@ -230,7 +231,7 @@ is setting this to `SDL_GPU_LOADOP_DONT_CARE`.
 With a custom skybox, you don't need an explicitly clean slate
 as you'll be drawing your own skybox overtop immediately anyway._
 
-The `store_op` is what we want to do with the data that we want to write to it.
+The `.store_op` is what we want to do with the data that we want to write to it.
 Here, we just want to overwrite everything with our new data,
 so we set it to `SDL_GPU_STOREOP_STORE`.
 

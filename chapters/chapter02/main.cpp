@@ -18,8 +18,8 @@ struct MyAppState
 	SDL_GPUDevice* device = nullptr;
 
 	SDL_GPUGraphicsPipeline* pipeline = nullptr;
-	SDL_GPUBuffer* vertexBuffer = nullptr;
 	Uint32 numVertices = 0;
+	SDL_GPUBuffer* vertexBuffer = nullptr;
 };
 
 // Adapted from: https://github.com/TheSpydog/SDL_gpu_examples/blob/main/Examples/Common.c
@@ -163,6 +163,7 @@ bool CreatePipeline(MyAppState* myAppState)
 		.rasterizer_state = SDL_GPURasterizerState{
 			.fill_mode = SDL_GPU_FILLMODE_FILL,
 			.cull_mode = SDL_GPU_CULLMODE_BACK,
+			.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE,
 		},
 		.target_info = SDL_GPUGraphicsPipelineTargetInfo{
 			.color_target_descriptions = colorTargetDescriptions.data(),
@@ -192,7 +193,6 @@ bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)
 		.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
 		.size = verticesSize,
 	};
-
 	myAppState->vertexBuffer = SDL_CreateGPUBuffer(myAppState->device, &vertexBufferCreateInfo);
 	if (myAppState->vertexBuffer == nullptr)
 	{
@@ -204,7 +204,6 @@ bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)
 		.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
 		.size = verticesSize,
 	};
-
 	SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(myAppState->device, &transferBufferCreateInfo);
 	if (transferBuffer == nullptr)
 	{
@@ -226,6 +225,12 @@ bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)
 
 	// Upload the transfer data to the vertex buffer
 	SDL_GPUCommandBuffer* uploadCmdBuf = SDL_AcquireGPUCommandBuffer(myAppState->device);
+	if (uploadCmdBuf == nullptr)
+	{
+		SDL_Log("Couldn't acquire GPU command buffer: %s", SDL_GetError());
+		return SDL_APP_FAILURE;
+	}
+
 	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuf);
 
 	SDL_GPUTransferBufferLocation bufferLocation = SDL_GPUTransferBufferLocation{
@@ -242,8 +247,14 @@ bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)
 	SDL_UploadToGPUBuffer(copyPass, &bufferLocation, &bufferRegion, false);
 
 	SDL_EndGPUCopyPass(copyPass);
-	SDL_SubmitGPUCommandBuffer(uploadCmdBuf);
+	if (!SDL_SubmitGPUCommandBuffer(uploadCmdBuf))
+	{
+		SDL_Log("Couldn't submit GPU command buffer: %s", SDL_GetError());
+		return false;
+	}
+
 	SDL_ReleaseGPUTransferBuffer(myAppState->device, transferBuffer);
+
 	return true;
 }
 
@@ -341,11 +352,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(commandBuffer, &colorTargetInfo, 1, nullptr);
 
 		SDL_BindGPUGraphicsPipeline(renderPass, myAppState->pipeline);
-		SDL_GPUBufferBinding bufferBinding = {
-			.buffer = myAppState->vertexBuffer,
-			.offset = 0,
+
+		std::array vertexBuffers{
+			SDL_GPUBufferBinding{
+				.buffer = myAppState->vertexBuffer,
+				.offset = 0,
+			},
 		};
-		SDL_BindGPUVertexBuffers(renderPass, 0, &bufferBinding, 1);
+		SDL_BindGPUVertexBuffers(renderPass, 0, vertexBuffers.data(), vertexBuffers.size());
+
 		SDL_DrawGPUPrimitives(renderPass, myAppState->numVertices, 1, 0, 0);
 
 		SDL_EndGPURenderPass(renderPass);
