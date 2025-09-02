@@ -1,6 +1,7 @@
 # How To Get Started With GPU Programming for Beginners
 
-If you want to start GPU Programming but don't know how yet, you have come to the right place!
+If you want to start GPU Programming or Graphics Programming but don't know how yet,
+you have come to the right place!  
 This online book will guide you through the whole process!
 
 From your first blank window, to your first triangle, to a 3D model loader, and hopefully beyond!
@@ -23,9 +24,9 @@ Some mobile devices are also supported, and web support is planned as well.
 SDL3's GPU API is heavily inspired by the famously verbose Vulkan, but it is much more condensed,
 so you should be able to get up and running relatively quickly.
 
-It contains essentially all features than a normal 3D application or game could need,
+It contains essentially all features that a normal 3D application or game could need,
 but if you need very platform-specific features or very modern functionality, you should look at other APIs instead.  
-But even then, SDL's GPU API is likely a good introduction for those more complicated APIs.
+But even then, SDL's GPU API is a good introduction for those more complicated platform APIs.
 
 So without further ado, let's get started, shall we!
 
