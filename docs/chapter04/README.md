@@ -45,4 +45,4 @@ Output main(Input input)
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter04/)
 
-[← Previous Chapter](../chapter03/README.md) | [Index](../README.md) | [Next Chapter →](/README.md)
+[← Previous Chapter](../chapter03/README.md) | [Index](../README.md) | [Next Chapter →](../chapter05/README.md)
