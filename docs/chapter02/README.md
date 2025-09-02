@@ -7,8 +7,11 @@ In this chapter, we will give the window we created in the last chapter a color,
 Before we can start drawing stuff into the window we created last chapter,
 we need to make a connection to the GPU Device that is inside the computer.
 
+Note that essentially all modern computers have a GPU, because this does not count only dedicated GPUs.  
+It also works with integrated GPUs!
+
 We will need this GPU Device pretty often, throughout our code,
-so add a field to store that in the `MyAppState` struct to store a pointer to the GPU Device:
+so add a field to the `MyAppState` struct to store a pointer to the GPU Device:
 
 ```c++
 struct MyAppState
