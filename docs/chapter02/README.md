@@ -21,18 +21,20 @@ struct MyAppState
 };
 ```
 
-Now we can create the actual GPU Device.
+Now we can create the actual connection to the GPU Device.
 
 To do this, we first need to make a decision.
-Because SDL's GPU API is a wrapper over multiple platform APIs that all take shaders in a different format,
-we need to choose which shader formats we, as application developers, will provide to the GPU API.
-See [this wiki page](https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat) for a full list.
-For this chapter, it doesn't really matter what you fill in, yet, because we won't be writing shaders yet,
-so for now, we will just write that we support Vulkan, DirectX and Metal, which are the main big three.
+For some parts of the rendering, we will need to write some GPU programs: shaders.
+In the introduction, I mentioned that SDL's GPU API is a wrapper over multiple platform APIs.
+These platform APIs all take these shaders in a their own formats,
+so we need to choose which shader formats we, as application developers, will provide.  
+For this chapter, it doesn't really matter what you fill in, because we won't actually be writing any shaders yet.  
+So for now, we will just write that we support all three desktop platform APIs: Vulkan, DirectX and Metal. 
+See [this SDL wiki page](https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat) for the full list of the shader formats you can support.
 
 The second argument, the boolean, tells SDL whether we enable "debug mode" on that device.
 For the duration of this guide, this will be `true`.
-When you ship your application, you should probably set that to `false`, though.
+When you ship your application, you will want to set that to `false`, though.
 
 The last argument tells SDL which GPU driver it should use.
 It's best to keep that as `nullptr`, to let SDL pick the optimal driver.
@@ -82,7 +84,9 @@ if (commandBuffer == nullptr)
 }
 ```
 
-Now of course, the things that we see in the window are images. These are stored as textures on the GPU, in its VRAM.
+As you probably know, things on the computer are rendered frame by frame,
+to give the illusion of movement by showing slightly different images in quick succession. 
+These are images stored as textures on the GPU, in its own memory, the VRAM.
 There are usually _multiple_ screen textures in what is called the "swapchain".
 Because they're stored in a metaphorical chain; a loop, which is swapped between.
 
@@ -90,7 +94,7 @@ While the screen is displaying a texture, the GPU is writing to the next one alr
 Once the GPU is done writing, the textures are swapped, and the screen displays the fresh texture,
 while the GPU starts writing to the old texture that was displayed last frame.
 
-SDL manages that swapchain for us, so we can simply get the texture
+SDL manages that swapchain for us, so we can simply request the texture
 that we need to write to for this frame in a single function call.
 
 The two `nullptr`s are for the dimensions of the depth buffer. This is something we will be worrying about later.
@@ -123,7 +127,7 @@ Now I should mention, modern GPU APIs often work with big structs with lots of o
 Then you pass that struct with all your options into the function.
 This prevents functions from having dozens of arguments and overloads/alternatives in case of optional options.
 
-Here we encounter our first one: [`SDL_GPUColorTargetInfo`](https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo)
+Here we encounter our first struct with options: [`SDL_GPUColorTargetInfo`](https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo)
 This struct contains the information about which texture the next Render Pass will apply to,
 which colors it will use, and what it will do to and with the colors.
 
@@ -143,7 +147,7 @@ is setting this to `SDL_GPU_LOADOP_DONT_CARE`.
 With a custom skybox, you don't need an explicitly clean slate
 as you'll be drawing your own skybox overtop immediately anyway._
 
-The `.store_op` is what we want to do with the data that we want to write to it.
+The `.store_op` is what we want to do with the data we have.
 Here, we just want to overwrite everything with our new data,
 so we set it to `SDL_GPU_STOREOP_STORE`.
 
