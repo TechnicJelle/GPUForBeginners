@@ -756,7 +756,12 @@ SDL_DrawGPUPrimitives(renderPass, myAppState->numVertices, 1, 0, 0);
 
 After this, you're done, and the render pass can be ended as before.
 
-## run and finally see a triangle
+## Run The Code
+
+You should now finally be able to see the promised triangle!
+
+If you don't see it and cannot figure out what went wrong,
+check out the [Support](../README.md#support) section!
 
 ![A red triangle on top of the background from the previous chapter.](images/03-triangle_single_color.png)
 
