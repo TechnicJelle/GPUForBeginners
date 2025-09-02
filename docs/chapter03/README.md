@@ -10,7 +10,7 @@ Triangles are the most basic geometric shape, and almost all 3D is made up of th
 _(Unless you use things like SDFs or some types of Voxel Rendering, but that is outside the scope of this guide.)_
 
 So all graphics programming starts with the first triangle.
-In this chapter, we will get our first triangle onto the screen.
+In this chapter we will get our first triangle onto the screen.
 
 This is a long chapter, because there are many new concepts to be learnt
 and quite a bit of infrastructure to be set up beforehand.  
@@ -18,14 +18,15 @@ Please do not get discouraged!
 
 ## Vertices
 
-Each triangle is made up of three vertices; three points in space.
+Each triangle is made up of three vertices; three points in 3D space.
 
 ![An illustration of a triangle, with the three points circled and numbered. 1 is in the bottom left, 2 is in the bottom right, and 3 is on the top.](images/02-vertex.png)
 
 The order of the vertices is important, because the order decides which way the triangle is facing.
 Knowing that allows for optimizations we will get into later.
 
-We can define what a Vertex is in our code by making a struct with three floats:
+We can define what a Vertex is in our code by making a struct with three floats.
+One for each 3D axis:
 
 ```c++
 struct Vertex
@@ -49,18 +50,22 @@ They are very useful, but for now we will stick to Graphics Pipelines.
 Graphics Pipelines have multiple stages that the data goes through.
 Most of these stages have options that need to be set for the data to go through correctly.
 
+There are many stages, but the main ones to care about are the following:
+
+Vertex Shader → Fragment Shader → Rasterization
+
 ### Shaders
 
 A few of the stages can even be fully programmed with GPU programs called "shaders".  
 SDL's GPU API exposes two of these shaders:
 
-- Vertex Shader: This GPU program transforms the vertex positions to be in the correct place in the world.
+- Vertex Shader: Transforms the vertex positions to be in the correct place in the world.
     - This runs for each vertex you pass to the GPU.
-- Fragment Shader: This GPU program decides which pixels become which color.
+- Fragment Shader: Decides which pixels become which color.
     - This runs for each fragment (essentially the same as a pixel) on the screen.
 
 Do not be alarmed by the fact that it runs these shaders so many times!
-GPUs are _heavily_ parallel devices with hundreds or even thousands of cores.
+GPUs are _highly_ parallel devices with hundreds or even thousands of cores.
 
 Some (older) GPU APIs included a compiler for shader code in their drivers,
 but modern GPU APIs delegate shader compilation to the application developers instead.
@@ -86,8 +91,8 @@ We need to download Shadercross manually, because it is not part of SDL itself.
 This is because it combines many shader compilers for all supported platforms into one easy-to-use tool,
 which would have made SDL way too big.
 
-Shadercross is available as both a CLI Tool and as a library.  
-In this guide, we will be using the CLI Tool.  
+Shadercross is available as both a CLI Tool and as a library. In this guide, we will be using the CLI Tool.
+
 The library is useful if you want to compile your shaders at runtime, instead of at compile-time.
 For most projects, this is not necessary.  
 Though, it could be useful for hot-reloading during development.
@@ -97,7 +102,8 @@ but you can download the latest build from its
 [**Actions** Tab](https://github.com/libsdl-org/SDL_shadercross/actions).  
 Make sure to get the latest successful build and to download the artifact for your specific platform.
 
-You can find the CLI tool executable in the `bin/` folder.  
+Once you have downloaded Shadercross, unpack it from the archive it came in.  
+You can then find the CLI tool executable in the `bin/` folder.  
 If you like, you can add this folder to your PATH, so you can easily call it from anywhere.
 
 #### Code
@@ -139,9 +145,10 @@ struct Output
 ```
 
 Here we see two new things: "`float4`" and "`SV_Position`".
-The `SV_Position` location is the location of the position output of the
-HLSL has some more types than C++ has for packed data of the same type.
 
+`SV_Position` is the location of the position output of the Vertex Shader.
+
+As for the `float4`: HLSL has some more types than C++ has for packed data of the same type.  
 You could consider these as structs themselves, where the values can be accessed through various names,
 like union structs.  
 Common patterns are `float3.x`, `float3.y`, `float3.z`.  
@@ -153,11 +160,11 @@ like coordinates and colors.
 They are very useful to the same operation on multiple pieces of data at the same time.
 We will use them more in the next chapter.
 
-By the way, yes, you saw that correctly: we are using a 4D data structure here instead of a 3D one.
+By the way, yes, you saw that correctly: we are using a 4D data structure here instead of a 3D one for the output position.
 This is used for some perspective mathematics that we will cover later.
 The last value of the `float4` for positions is called `w`.
 
-Now that we have our input and output defined, we can write our main function.
+Now that we have our input and output defined, we can write our Vertex Shader's main function.
 
 We create an instance of the `Output` struct and name it `output`.
 Then we set the `.Position` of the `output` to a new `float4` with the xyz from the `input`.
@@ -185,12 +192,13 @@ Again, we define two structs: `Input` and `Output`.
 However, the `Input` struct is empty, because we don't have any inputs yet.  
 The `Output` struct has a `float4 Color : SV_Target0`.
 
-The main function has the same signature again, and also mostly the same content.
-Except here we set _all_ the values of the `float4`, which is also a color now, instead of a position.  
-Colors in HLSL are usually `float`s between `0.0f` and `1.0f`. (Not 0 to 255!)
+The main function has the same signature again, and also mostly the same content.  
+Except here we hardcode _all_ the values of the `float4`, instead of passing through some other data, like we did before in the Vertex Shader.  
+The `float4` also represents a color now, instead of a position.  
+Colors in HLSL are usually made up of `float`s between `0.0f` and `1.0f`. (So not 0 to 255!)
 
 Choose any color you like, but make sure that the alpha is set to 1.
-I will set it to red, here.
+I will set my color to red, here.
 
 So our resulting fragment shader code is:
 
@@ -217,7 +225,7 @@ Output main(Input input)
 
 Now that we have our two shader files, we can compile them!
 
-Open a terminal/console make sure you can run the CLI and you can access the HLSL files.
+Open a terminal/console, make sure you can run the CLI and you can access the HLSL files.
 
 First, we pass the name of the HLSL file as our input,
 and we can set the output file name/path with the `-o` flag.
@@ -248,7 +256,7 @@ shadercross "SolidColor.frag.hlsl" -o "SolidColor.frag.msl"
 Place the compiled shader files somewhere your application will be able to access them.
 I will store them in a directory called "shaders" next to my executable.
 
-An exercise to the reader: integrate this CLI tool in your build system,
+An optional exercise to the reader: integrate this CLI tool in your build system,
 so that it runs every time you change the HLSL code,
 and that it puts the compiled files in the correct spot automatically.  
 You can look at how I do it
@@ -259,7 +267,7 @@ You can look at how I do it
 Now that we have compiled the shaders into the various formats the platform(s) might need,
 we need to make our application actually load them in!
 
-Create a new function above `SDL_AppInit()`:
+Create a new function above `SDL_AppInit()`:  
 `SDL_GPUShader* LoadShader(SDL_GPUDevice* device, const std::string& shaderFilename)`.
 
 To make an `SDL_GPUShader`, we first need to collect some information about the shader and the current platform.
@@ -290,7 +298,7 @@ I will use the `std::filesystem::path` class for this, but you can use normal st
 With `SDL_GetBasePath()`, I get the path to the directory of the executable
 and from there I go into the "shaders" directory.
 
-The `SDL_GPUShaderFormat` starts off as `SDL_GPU_SHADERFORMAT_INVALID`, because we don't know yet.
+The `SDL_GPUShaderFormat` starts off as `SDL_GPU_SHADERFORMAT_INVALID`, because we don't know the format yet.
 
 We also need to remember the entry point, which we need as a c-string, so we might as well make it that from the get-go.
 
@@ -332,7 +340,7 @@ else
 
 Now that we know which file we need to load and from where, we can load it.
 If you like, you can use C++'s `std::ifstream` for this (make sure to load it as binary),
-but I actually prefer SDL's API for loading files, so I will use that.
+but I actually prefer SDL's API for loading files from disk , so I will use that.
 
 ```c++
 size_t fileSize;
@@ -370,7 +378,7 @@ You can then finally return the `shader` you got.
 
 ### Create the Pipeline
 
-Create a new function above `SDL_AppInit()`:
+Create a new function above `SDL_AppInit()`:  
 `bool CreatePipeline(MyAppState* myAppState)`.  
 This function returns true on success, false on failure.
 
@@ -528,11 +536,11 @@ For now, the data we will send is just the three vertices of the triangle.
 
 Create a new function above `SDL_AppInit()`:
 `bool CreateVertexBuffer(MyAppState* myAppState, std::span<Vertex> vertices)`.  
-This function returns true on success, false on failure.
+This function also returns true on success, false on failure.
 
 In here, we first need to store how many vertices we're working with.  
 This data is needed later when we're actually rendering the vertices,
-so make a new field in you MyAppState struct: `Uint32 numVertices = 0;`.  
+so make a new field in your `MyAppState` struct: `Uint32 numVertices = 0;`.  
 We will also need the total size in bytes of the data,
 but this one can just be a local variable.
 
@@ -541,7 +549,7 @@ myAppState->numVertices = vertices.size();
 Uint32 verticesSize = myAppState->numVertices * sizeof(Vertex);
 ```
 
-We will now request the GPU to create a bit of memory for us
+We will now request the GPU to allocate a bit of memory for us
 in which we can store our data: a "Vertex Buffer".
 
 ```c++
@@ -575,7 +583,7 @@ if (transferBuffer == nullptr)
 }
 ```
 
-The Transfer Buffer gives us a pointer to the start of some memory with the length we requested:
+With the `SDL_MapGPUTransferBuffer()` function, the Transfer Buffer gives us a pointer to the start of some memory with the size we requested.
 
 ```c++
 Vertex* transferData = static_cast<Vertex*>(SDL_MapGPUTransferBuffer(myAppState->device, transferBuffer, false));
@@ -587,7 +595,7 @@ if (transferData == nullptr)
 }
 ```
 
-We can then copy our vertices into the Transfer Buffer:
+We can then copy our vertices into the memory that the Transfer Buffer mapped for us:
 
 ```c++
 SDL_memcpy(transferData, vertices.data(), verticesSize);
@@ -625,7 +633,7 @@ SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuf);
 We now need to put actual instructions into this Copy Pass,
 for which we need to provide some information in the form of structs again.
 
-Firstly, we need to say the source from _where_ to upload.
+Firstly, we need to define the source from _where_ to upload.
 The `.offset` here is used to tell where the data in your transfer buffer starts.
 Usually this is just at the start, so we set it to `0`.
 
@@ -636,7 +644,7 @@ SDL_GPUTransferBufferLocation bufferLocation = SDL_GPUTransferBufferLocation{
 };
 ```
 
-Secondly, we need to say where we want to upload _to_.
+Secondly, we need to define where we want to upload _to_.
 Of course this is our Vertex Buffer:
 
 ```c++
@@ -686,6 +694,17 @@ Put it at the end of `SDL_AppInit()`, after `CreatePipeline()`.
 We need to make sure the order of them is _counter-clockwise_, but which one is first does not matter.  
 The order of the vertices decides which way the triangle is facing.
 At the end of the chapter, we will do an optimization with this.
+
+The positions of the vertices are in Normalized Device Coordinates (NDC).
+This means we are not measuring in screen pixels,
+but in a "normalized" range of `-1.0` to `1.0`.  
+The X coordinate represents width.
+`-1.0` is the left and `1.0` is the right.  
+The Y coordinate represents height.
+`-1.0` is down and `1.0` is up.  
+The Z coordinate represents depth.
+For now, we will leave this at `0`, because we don't want any depth yet.
+In a later chapter, we will handle depth properly.
 
 ```c++
 std::array vertices{
@@ -760,8 +779,8 @@ After this, you're done, and the render pass can be ended as before.
 
 You should now finally be able to see the promised triangle!
 
-If you don't see it and cannot figure out what went wrong,
-check out the [Support](../README.md#support) section!
+If you don't see it and cannot figure out what went wrong, compare your code to the [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter03/).  
+If you are still lost, check out the [Support](../README.md#support) section!
 
 ![A red triangle on top of the background from the previous chapter.](images/03-triangle_single_color.png)
 
