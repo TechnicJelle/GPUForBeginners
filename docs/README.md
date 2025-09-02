@@ -31,11 +31,11 @@ So without further ado, let's get started, shall we!
 
 ## Index
 
-1. [Chapter 1: Setup](chapter01new/README.md)  
+1. [Chapter 1: Setup](chapter01/README.md)  
    (Development Environment, Project Creation, Game Loop, Window)
-2. [Chapter 2: Blank Screen](chapter02new/README.md)  
+2. [Chapter 2: Blank Screen](chapter02/README.md)  
    (GPU Device, Command Buffers, Render Passes)
-3. [Chapter 3: First Triangle](chapter03new/README.md)  
+3. [Chapter 3: First Triangle](chapter03/README.md)  
    (Vertices, Pipelines, Vertex Buffers, Backface Culling)
 4. [Chapter 4: Rainbow Triangle](chapter04/README.md)  
    (Additional per-vertex data, Packed data, Vertex Colors)

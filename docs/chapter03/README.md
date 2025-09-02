@@ -782,4 +782,4 @@ But if you suddenly don't see the triangle anymore, double-check the order of yo
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/)
 
-[← Previous Chapter](../chapter02new/README.md) | [Index](../README.md) | [Next Chapter →](../chapter04/README.md)
+[← Previous Chapter](../chapter02/README.md) | [Index](../README.md) | [Next Chapter →](../chapter04/README.md)

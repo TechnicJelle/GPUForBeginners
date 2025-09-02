@@ -223,4 +223,4 @@ Now, hopefully, you should be able to run the application, and see a nice cornfl
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter01/main.cpp)
 
-[← Previous Chapter](../chapter01new/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03new/README.md)
+[← Previous Chapter](../chapter01/README.md) | [Index](../README.md) | [Next Chapter →](../chapter03/README.md)

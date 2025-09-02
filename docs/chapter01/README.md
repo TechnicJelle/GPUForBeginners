@@ -107,4 +107,4 @@ You should probably remove the `SDL_Log`s, now.
 
 In the next chapter, we will color in the window with the GPU!
 
-[Index](../README.md) | [Next Chapter →](../chapter02new/README.md)
+[Index](../README.md) | [Next Chapter →](../chapter02/README.md)
