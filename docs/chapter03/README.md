@@ -257,8 +257,8 @@ Place the compiled shader files somewhere your application will be able to acces
 I will store them in a directory called "shaders" next to my executable.
 
 An optional exercise to the reader: integrate this CLI tool in your build system,
-so that it runs every time you change the HLSL code,
-and that it puts the compiled files in the correct spot automatically.  
+so that it runs every time you change the HLSL code
+and puts the compiled files in the correct spot automatically.  
 You can look at how I do it
 [here](https://github.com/TechnicJelle/GPUForBeginners/blob/ab63d5d11df06466a67ec46a5e8cd51723629203/CMakeLists.txt#L35-L68).
 
