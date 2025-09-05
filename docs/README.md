@@ -6,11 +6,7 @@ This online book will guide you through the whole process!
 
 From your first blank window, to your first triangle, to a 3D model loader, and hopefully beyond!
 
-The code of this guide will be C++, because that is by far the most common language
-in the Graphics Programming industry today.
-So this guide assumes that you are already familiar with C++.
-
-## A quick history lesson on GPU Programming
+## Why and what?
 
 There exist many APIs with which you can control GPUs.
 Many of them are old and antiquated,
@@ -27,6 +23,13 @@ so you should be able to get up and running relatively quickly.
 It contains essentially all features that a normal 3D application or game could need,
 but if you need very platform-specific features or very modern functionality, you should look at other APIs instead.  
 But even then, SDL's GPU API is a good introduction for those more complicated platform APIs.
+
+The code of this guide will be C++, because that is by far the most common language
+in the Graphics Programming industry today. So this guide assumes that you are already familiar with C++.
+
+That said, you can follow along using different languages, because the main focus here is SDL3's GPU API.  
+You can translate the C++ concepts that are used to other languages while reading.  
+And SDL3 itself is available in many other languages as well, through third-party bindings.
 
 So without further ado, let's get started, shall we!
 
