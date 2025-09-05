@@ -59,7 +59,7 @@ if (!SDL_ClaimWindowForGPUDevice(myAppState->device, myAppState->window))
 }
 ```
 
-## Command Buffers
+## Command Buffers & Swapchain
 
 To now control the GPU Device that we have a pointer to, we must create so-called "command buffers".
 These are objects that you fill with GPU commands on the CPU, and then send to the GPU in one go, to be processed.
