@@ -59,7 +59,7 @@ if (!SDL_ClaimWindowForGPUDevice(myAppState->device, myAppState->window))
 }
 ```
 
-## Command Buffers & Swapchain
+## Command Buffers
 
 To now control the GPU Device that we have a pointer to, we must create so-called "command buffers".
 These are objects that you fill with GPU commands on the CPU, and then send to the GPU in one go, to be processed.
@@ -83,6 +83,8 @@ if (commandBuffer == nullptr)
 	return SDL_APP_FAILURE;
 }
 ```
+
+## Swapchain
 
 As you probably know, things on the computer are rendered frame by frame,
 to give the illusion of movement by showing slightly different images in quick succession. 
