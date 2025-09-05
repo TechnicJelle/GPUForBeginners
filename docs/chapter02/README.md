@@ -94,6 +94,8 @@ While the screen is displaying a texture, the GPU is writing to the next one alr
 Once the GPU is done writing, the textures are swapped, and the screen displays the fresh texture,
 while the GPU starts writing to the old texture that was displayed last frame.
 
+![An animation demonstrating how a swapchain works.](images/01-swapchain.gif)
+
 SDL manages that swapchain for us, so we can simply request the texture
 that we need to write to for this frame in a single function call.
 
@@ -226,7 +228,7 @@ delete myAppState;
 
 Now, hopefully, you should be able to run the application, and see a nice cornflower blue window!
 
-![A system window filled entirely with cornflower blue.](images/01-clearscreen.png)
+![A system window filled entirely with cornflower blue.](images/02-clearscreen.png)
 
 [Final Chapter Code](https://github.com/TechnicJelle/GPUForBeginners/blob/main/chapters/chapter02/main.cpp)
 
