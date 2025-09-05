@@ -88,7 +88,11 @@ MyAppState* myAppState = new MyAppState();
 *appstate = myAppState;
 ```
 
-We can then create the window and store it in our struct instance:
+We can then create the window and store it in our struct instance.  
+With the [SDL_CreateWindow()](https://wiki.libsdl.org/SDL3/SDL_CreateWindow) function, we can do just that!  
+First, we pass the title/name of the window, then the size (width, height).  
+The last parameter is for "flags" that can change the properties of the window.
+For now, we don't need to change any of these properties, so we set it to `0` to denote "nothing".
 
 ```c++
 myAppState->window = SDL_CreateWindow("Hello, SDL GPU!", 1280, 720, 0);
