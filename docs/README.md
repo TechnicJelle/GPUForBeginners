@@ -33,7 +33,7 @@ And SDL3 itself is available in many other languages as well, through third-part
 
 So without further ado, let's get started, shall we!
 
-## Index
+## Table of Contents
 
 1. [Chapter 1: Setup](chapter01/README.md)  
    (Development Environment, Project Creation, Game Loop, Window)
