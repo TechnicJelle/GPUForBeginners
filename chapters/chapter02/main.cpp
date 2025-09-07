@@ -110,8 +110,8 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
 	MyAppState* myAppState = static_cast<MyAppState*>(appstate);
 
 	SDL_ReleaseWindowFromGPUDevice(myAppState->device, myAppState->window);
-	SDL_DestroyWindow(myAppState->window);
 	SDL_DestroyGPUDevice(myAppState->device);
+	SDL_DestroyWindow(myAppState->window);
 
 	delete myAppState;
 }

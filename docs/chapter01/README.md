@@ -107,9 +107,31 @@ if (myAppState->window == nullptr)
 
 Don't forget to check for errors!
 
+Right now, you could already run the code, but we haven't done our cleanup yet,
+so hold on for a few more moments!
+
+## Cleanup
+
+We have made some resources, so we need to clean them up at the end.
+
+In your `SDL_AppQuit()` function, get the pointer to your MyAppState instance back from SDL:
+
+```c++
+MyAppState* myAppState = static_cast<MyAppState*>(appstate);
+```
+
+With that, we can clean up the window and then the `MyAppState` struct instance itself:
+
+```c++
+SDL_DestroyWindow(myAppState->window);
+delete myAppState;
+```
+
+## Run
+
 If you run the application now, you will see a blank/black/empty screen that you can close with the X button.
 
-You should probably remove the `SDL_Log`s, now.
+You should also remove the remaining `SDL_Log`s, now.
 
 In the next chapter, we will color in the window with the GPU!
 

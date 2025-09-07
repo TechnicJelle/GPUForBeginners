@@ -1,6 +1,6 @@
 # Chapter 2: Blank Screen
 
-In this chapter, we will give the window we created in the last chapter a color, instead of black.
+In this chapter, we will fill the window we created in the last chapter up with a custom color of our choosing.
 
 ## GPU Device
 
@@ -26,7 +26,7 @@ Now we can create the actual connection to the GPU Device.
 To do this, we first need to make a decision.
 For some parts of the rendering, we will need to write some GPU programs: shaders.
 In the introduction, I mentioned that SDL's GPU API is a wrapper over multiple platform APIs.
-These platform APIs all take these shaders in a their own formats,
+These platform APIs all take these shaders in their own formats,
 so we need to choose which shader formats we, as application developers, will provide.  
 For this chapter, it doesn't really matter what you fill in, because we won't actually be writing any shaders yet.  
 So for now, we will just write that we support all three desktop platform APIs: Vulkan, DirectX and Metal.
@@ -39,6 +39,8 @@ When you ship your application, you will want to set that to `false`, though.
 
 The last argument tells SDL which GPU driver it should use.
 It's best to keep that as `nullptr`, to let SDL pick the optimal driver.
+
+Put this after your window creation code:
 
 ```c++
 SDL_GPUShaderFormat formatFlags = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL;
@@ -206,29 +208,23 @@ While saying that, we also finally send it off to the GPU for processing.
 SDL_SubmitGPUCommandBuffer(commandBuffer);
 ```
 
-Right now, you could already run the code, but we haven't done out cleanup yet, so hold on for a few more moments!
-
 ## Cleanup
 
-In your `SDL_AppQuit()` function, get the pointer to your MyAppState instance back from SDL:
-
-```c++
-MyAppState* myAppState = static_cast<MyAppState*>(appstate);
-```
-
-With that, we can now deattach the GPU Device from the Window again:
+In your `SDL_AppQuit()` function, before destroying the window, deattach the GPU Device from the Window:
 
 ```c++
 SDL_ReleaseWindowFromGPUDevice(myAppState->device, myAppState->window);
 ```
 
-And then clean them up:
+And then clean up the GPU Device itself:
 
 ```c++
-SDL_DestroyWindow(myAppState->window);
 SDL_DestroyGPUDevice(myAppState->device);
-delete myAppState;
 ```
+
+After this, we destroy the window like in the last chapter.
+
+## Run
 
 Now, hopefully, you should be able to run the application, and see a nice cornflower blue window!
 
