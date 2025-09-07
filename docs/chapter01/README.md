@@ -81,7 +81,7 @@ struct MyAppState
 };
 ```
 
-Now, in the `SDL_AppInit` function, create an instance of it on the heap and pass it to SDL for safekeeping:
+Now, in the `SDL_AppInit()` function, create an instance of it on the heap and pass it to SDL for safekeeping:
 
 ```c++
 MyAppState* myAppState = new MyAppState();
@@ -92,7 +92,8 @@ We can then create the window and store it in our struct instance.
 With the [SDL_CreateWindow()](https://wiki.libsdl.org/SDL3/SDL_CreateWindow) function, we can do just that!
 
 First, we pass the title/name of the window, then the size (width, height).  
-The last parameter is for "[flags](https://wiki.libsdl.org/SDL3/SDL_WindowFlags)" that can change the properties of the window.
+The last parameter is for "[flags](https://wiki.libsdl.org/SDL3/SDL_WindowFlags)"
+that can change the properties of the window.
 For now, we don't need to change any of these properties, so we set it to `0` to denote "nothing".
 
 ```c++

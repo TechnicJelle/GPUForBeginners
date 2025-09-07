@@ -29,8 +29,9 @@ In the introduction, I mentioned that SDL's GPU API is a wrapper over multiple p
 These platform APIs all take these shaders in a their own formats,
 so we need to choose which shader formats we, as application developers, will provide.  
 For this chapter, it doesn't really matter what you fill in, because we won't actually be writing any shaders yet.  
-So for now, we will just write that we support all three desktop platform APIs: Vulkan, DirectX and Metal. 
-See [this SDL wiki page](https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat) for the full list of the shader formats you can support.
+So for now, we will just write that we support all three desktop platform APIs: Vulkan, DirectX and Metal.
+See [this SDL wiki page](https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat) for the full list of the shader formats
+you can support.
 
 The second argument, the boolean, tells SDL whether we enable "debug mode" on that device.
 For the duration of this guide, this will be `true`.
@@ -66,7 +67,7 @@ These are objects that you fill with GPU commands on the CPU, and then send to t
 The CPU can then continue with its job, while the GPU is doing _its_ job.
 This way, the two can neatly work in parallel.
 
-In `SDL_AppIterate`, get the pointer to your MyAppState instance back from SDL:
+In `SDL_AppIterate()`, get the pointer to your MyAppState instance back from SDL:
 
 ```c++
 MyAppState* myAppState = static_cast<MyAppState*>(appstate);
@@ -87,7 +88,7 @@ if (commandBuffer == nullptr)
 ## Swapchain
 
 As you probably know, things on the computer are rendered frame by frame,
-to give the illusion of movement by showing slightly different images in quick succession. 
+to give the illusion of movement by showing slightly different images in quick succession.
 These are images stored as textures on the GPU, in its own memory, the VRAM.
 There are usually _multiple_ screen textures in what is called the "swapchain".
 Because they're stored in a metaphorical chain; a loop, which is swapped between.
@@ -131,7 +132,8 @@ Now I should mention, modern GPU APIs often work with big structs with lots of o
 Then you pass that struct with all your options into the function.
 This prevents functions from having dozens of arguments and overloads/alternatives in case of optional options.
 
-Here we encounter our first struct with options: [`SDL_GPUColorTargetInfo`](https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo)
+Here we encounter our first struct with options:
+[`SDL_GPUColorTargetInfo`](https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo)
 This struct contains the information about which texture the next Render Pass will apply to,
 which colors it will use, and what it will do to and with the colors.
 
@@ -208,7 +210,7 @@ Right now, you could already run the code, but we haven't done out cleanup yet, 
 
 ## Cleanup
 
-In your `SDL_AppQuit` function, get the pointer to your MyAppState instance back from SDL:
+In your `SDL_AppQuit()` function, get the pointer to your MyAppState instance back from SDL:
 
 ```c++
 MyAppState* myAppState = static_cast<MyAppState*>(appstate);

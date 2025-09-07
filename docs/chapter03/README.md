@@ -193,7 +193,8 @@ However, the `Input` struct is empty, because we don't have any inputs yet.
 The `Output` struct has a `float4 Color : SV_Target0`.
 
 The main function has the same signature again, and also mostly the same content.  
-Except here we hardcode _all_ the values of the `float4`, instead of passing through some other data, like we did before in the Vertex Shader.  
+Except here we hardcode _all_ the values of the `float4`, instead of passing through some other data,
+like we did before in the Vertex Shader.  
 The `float4` also represents a color now, instead of a position.  
 Colors in HLSL are usually made up of `float`s between `0.0f` and `1.0f`. (So not 0 to 255!)
 
