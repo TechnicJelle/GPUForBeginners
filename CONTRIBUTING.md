@@ -4,6 +4,10 @@ Let's make this guide the best guide there is, _together_!
 
 # Writing style
 
+## Order
+
+Code is explained _before_ the actual code snippet.
+
 ## Spelling
 
 Colour is spelled in American style, to match SDL's API.
@@ -23,7 +27,7 @@ Examples: `.load_op`, `.rasterizer_state`
 
 ## Referring to Functions
 
-When referring to a function, write the name of the function, followed by a pair of parentheses.  
+When referring to a function, write the name of the function, followed by a pair of parentheses.
 You may add the word "function" afterwards, if it fits neatly in the sentence.
 
 Do not include the whole signature; just the parentheses is enough.
@@ -85,7 +89,7 @@ There should be spaces between `if`, `else`, `switch` and their parentheses.
 
 ## Indentation
 
-Indentation will be done using tabs.  
+Indentation will be done using tabs.
 Where alignment is desired, spaces will follow after the tabs.
 
 Example:
